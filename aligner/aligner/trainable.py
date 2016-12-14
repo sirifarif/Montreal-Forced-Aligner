@@ -43,7 +43,7 @@ class TrainableAligner(BaseAligner):
     tri_fmllr_params : :class:`~aligner.config.TriphoneFmllrConfig`, optional
         Speaker-adapted triphone training parameters to use, if different from defaults
     '''
-    def save(self, path):
+    def save(self, path, mode):
         '''
         Output an acoustic model and dictionary to the specified path
 
@@ -52,15 +52,21 @@ class TrainableAligner(BaseAligner):
         path : str
             Path to save acoustic model and dictionary
         '''
-        directory, filename = os.path.split(path)
-        basename, _ = os.path.splitext(filename)
-        archive = Archive.empty(basename)
-        archive.add_triphone_model(self.tri_fmllr_directory)
+        if(mode == 'mono'):
+            directory = os.path.join(path, 'mono')
+            archive = Archive.empty('mono')
+            archive.add_model(self.mono_directory)
+        elif(mode == 'tri'):
+            directory = os.path.join(path, 'tri')
+            archive = Archive.empty('tri')
+            archive.add_triphone_model(self.tri_directory)
+        elif(mode == 'trifmllr'):
+            directory = os.path.join(path, 'trifmllr')
+            archive = Archive.empty('trifmllr')
+            archive.add_triphone_model(self.tri_fmllr_directory)
         archive.add_dictionary(self.dictionary)
-        os.makedirs(directory, exist_ok = True)
-        basename, _ = os.path.splitext(path)
-        archive.dump(basename)
-        print('Saved model to {}'.format(path))
+        archive.dump(directory)
+        print('Saved model to {}'.format(directory))
 
     def _do_tri_training(self):
         self.call_back('Beginning triphone training...')

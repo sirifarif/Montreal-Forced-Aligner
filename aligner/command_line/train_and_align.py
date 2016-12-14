@@ -51,13 +51,14 @@ def align_corpus(corpus_dir, dict_path,  output_directory, temp_dir,
                         tri_fmllr_params = tri_fmllr_params, num_jobs = args.num_jobs)
     a.verbose = args.verbose
     a.train_mono()
-    a.export_textgrids()
-    a.train_tri()
-    a.export_textgrids()
-    a.train_tri_fmllr()
-    a.export_textgrids()
     if output_model_path is not None:
-        a.save(output_model_path)
+        a.save(output_model_path, 'mono')
+    a.train_tri()
+    if output_model_path is not None:
+        a.save(output_model_path, 'tri')
+    a.train_tri_fmllr()
+    if output_model_path is not None:
+        a.save(output_model_path, 'trifmllr')
 
 def align_corpus_no_dict(corpus_dir, output_directory, temp_dir,
         output_model_path, args):
@@ -90,13 +91,14 @@ def align_corpus_no_dict(corpus_dir, output_directory, temp_dir,
                         tri_fmllr_params = tri_fmllr_params, num_jobs = args.num_jobs)
     a.verbose = args.verbose
     a.train_mono()
-    a.export_textgrids()
-    a.train_tri()
-    a.export_textgrids()
-    a.train_tri_fmllr()
-    a.export_textgrids()
     if output_model_path is not None:
-        a.save(output_model_path)
+        a.save(output_model_path, 'mono')
+    a.train_tri()
+    if output_model_path is not None:
+        a.save(output_model_path, 'tri')
+    a.train_tri_fmllr()
+    if output_model_path is not None:
+        a.save(output_model_path, 'trifmllr')
 
 
 if __name__ == '__main__': # pragma: no cover
