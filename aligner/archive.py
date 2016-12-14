@@ -58,6 +58,14 @@ class Archive(object):
         copy(os.path.join(source, 'final.mdl'), self.dirname)
         copy(os.path.join(source, 'final.occs'), self.dirname)
         copy(os.path.join(source, 'tree'), self.dirname)
+    
+    def add_model(self, source):
+        """
+        Add file into archive
+        """
+        copy(os.path.join(source, 'final.mdl'), self.dirname)
+        copy(os.path.join(source, 'final.occs'), self.dirname)
+        copy(os.path.join(source, 'tree'), self.dirname)
 
     def export_triphone_model(self, destination):
         """
