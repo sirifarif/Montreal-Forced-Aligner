@@ -54,7 +54,7 @@ class MonophoneConfig(object):
                         '--self-loop-scale=0.1']
         self.beam = 10
         self.retry_beam = 40
-        self.max_gauss_count = 1000
+        self.max_gauss_count = 1500
         self.boost_silence = 1.0
         if kwargs.get('align_often', False):
             self.realign_iters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14,
@@ -224,7 +224,7 @@ class MfccConfig(object):
         if kwargs is None:
             kwargs = {}
         self.job = job
-        self.config_dict = {'use-energy':False, 'frame-shift':10}
+        self.config_dict = {'use-energy':True, 'frame-shift':10}
         self.config_dict.update(kwargs)
         self.output_directory = output_directory
         self.write()

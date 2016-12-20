@@ -29,7 +29,7 @@ included_filenames = ['compute-mfcc-feats', 'copy-feats', 'gmm-acc-stats-ali',
                 'cluster-phones', 'compile-questions', 'build-tree','gmm-init-model',
                 'gmm-mixup', 'gmm-info', 'fstcompile', 'fstarcsort', 'compute-cmvn-stats',
                 'apply-cmvn', 'add-deltas', 'feat-to-dim', 'subset-feats',
-                'extract-segments', 'openblas', 'openfst64']
+                'extract-segments', 'openblas', 'openfst64', 'show-transitions']
 
 dylib_pattern = re.compile(r'\s*(.*)\s+\(')
 
