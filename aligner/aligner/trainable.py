@@ -43,8 +43,7 @@ class TrainableAligner(BaseAligner):
     tri_fmllr_params : :class:`~aligner.config.TriphoneFmllrConfig`, optional
         Speaker-adapted triphone training parameters to use, if different from defaults
     '''
-
-    def save(self, path):
+    def saveMono(self, path):
         '''
         Output an acoustic model and dictionary to the specified path
 
@@ -53,15 +52,50 @@ class TrainableAligner(BaseAligner):
         path : str
             Path to save acoustic model and dictionary
         '''
-        directory, filename = os.path.split(path)
+        filename = 'mono.zip'
+        basename, _ = os.path.splitext(filename)
+        acoustic_model = AcousticModel.empty(basename)
+        acoustic_model.add_meta_file(self)
+        acoustic_model.add_monophone_model(self.mono_directory)
+        os.makedirs(path, exist_ok=True)
+        acoustic_model.dump(os.path.join(path,basename))
+        print('Saved model to {}'.format(path))
+
+    def saveTri(self, path):
+        '''
+        Output an acoustic model and dictionary to the specified path
+
+        Parameters
+        ----------
+        path : str
+            Path to save acoustic model and dictionary
+        '''
+        filename = 'tri.zip'
+        basename, _ = os.path.splitext(filename)
+        acoustic_model = AcousticModel.empty(basename)
+        acoustic_model.add_meta_file(self)
+        acoustic_model.add_triphone_model(self.tri_directory)
+        os.makedirs(path, exist_ok=True)
+        acoustic_model.dump(os.path.join(path, basename))
+        print('Saved model to {}'.format(path))
+
+    def saveFmllr(self, path):
+        '''
+        Output an acoustic model and dictionary to the specified path
+
+        Parameters
+        ----------
+        path : str
+            Path to save acoustic model and dictionary
+        '''
+        filename = 'tri_fmllr.zip'
         basename, _ = os.path.splitext(filename)
         acoustic_model = AcousticModel.empty(basename)
         acoustic_model.add_meta_file(self)
         #acoustic_model.add_triphone_model(self.tri_fmllr_directory)
         acoustic_model.add_triphone_fmllr_model(self.tri_fmllr_directory)
-        os.makedirs(directory, exist_ok=True)
-        basename, _ = os.path.splitext(path)
-        acoustic_model.dump(basename)
+        os.makedirs(path, exist_ok=True)
+        acoustic_model.dump(os.path.join(path, basename))
         print('Saved model to {}'.format(path))
 
     def _do_tri_training(self):

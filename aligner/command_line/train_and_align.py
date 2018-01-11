@@ -66,20 +66,22 @@ def align_corpus(args):
                              tri_fmllr_params=tri_fmllr_params, num_jobs=args.num_jobs, skip_input=getattr(args,'quiet', False))
         a.verbose = args.verbose
         a.train_mono()
-        a.export_textgrids()
-        a.train_tri()
-        a.export_textgrids()
-        a.train_tri_fmllr()
-        a.export_textgrids()
         if args.output_model_path is not None:
-            a.save(args.output_model_path)
+            a.saveMono(args.output_model_path)
+
+        a.train_tri()
+        if args.output_model_path is not None:
+            a.saveTri(args.output_model_path)
+
+        a.train_tri_fmllr()
+        if args.output_model_path is not None:
+            a.saveFmllr(args.output_model_path)
     except:
         conf['dirty'] = True
         raise
     finally:
         with open(conf_path, 'w') as f:
             yaml.dump(conf, f)
-
 
 def align_corpus_no_dict(args):
     if not args.temp_directory:
@@ -110,14 +112,16 @@ def align_corpus_no_dict(args):
                          tri_fmllr_params=tri_fmllr_params, num_jobs=args.num_jobs, debug=args.debug, skip_input=getattr(args,'quiet', False))
     a.verbose = args.verbose
     a.train_mono()
-    a.export_textgrids()
-    a.train_tri()
-    a.export_textgrids()
-    a.train_tri_fmllr()
-    a.export_textgrids()
     if args.output_model_path is not None:
-        a.save(args.output_model_path)
+        a.saveMono(args.output_model_path)
 
+    a.train_tri()
+    if args.output_model_path is not None:
+        a.saveTri(args.output_model_path)
+
+    a.train_tri_fmllr()
+    if args.output_model_path is not None:
+        a.saveFmllr(args.output_model_path)
 
 def validate_args(args):
     if not args.no_dict and args.dictionary_path == '':

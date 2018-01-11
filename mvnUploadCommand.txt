@@ -1,0 +1,1 @@
+mvn deploy:deploy-file -Dfile=/local/arifkhan/workspace/Montreal-Forced-Aligner/dist/montreal-forced-aligner.zip -DgroupId=org.m2ci.msp.mfa -DartifactId=montreal-forced-aligner -Dclassifier=macosx -Dversion=1.0.0 -Dpackaging=zip -DrepositoryId=cloudark -Durl=http://cloudark:8081/artifactory/ext-release-local

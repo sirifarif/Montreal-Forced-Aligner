@@ -88,13 +88,21 @@ class AcousticModel(Archive):
             self._meta['phones'] = set(self._meta.get('phones', []))
         return self._meta
 
+    def add_monophone_model(self, source):
+        """
+        Add file into archive
+        """
+        copy(os.path.join(source, 'final.mdl'), self.dirname)
+        copy(os.path.join(source, 'final.occs'), self.dirname)
+        copy(os.path.join(source, 'tree'), self.dirname)
+
     def add_triphone_model(self, source):
         """
         Add file into archive
         """
-        copyfile(os.path.join(source, 'final.mdl'), os.path.join(self.dirname, 'ali-final.mdl'))
-        copyfile(os.path.join(source, 'final.occs'), os.path.join(self.dirname, 'ali-final.occs'))
-        copyfile(os.path.join(source, 'tree'), os.path.join(self.dirname, 'ali-tree'))
+        copy(os.path.join(source, 'final.mdl'), self.dirname)
+        copy(os.path.join(source, 'final.occs'), self.dirname)
+        copy(os.path.join(source, 'tree'), self.dirname)
 
     def add_triphone_fmllr_model(self, source):
         """
@@ -103,6 +111,14 @@ class AcousticModel(Archive):
         copy(os.path.join(source, 'final.mdl'), self.dirname)
         copy(os.path.join(source, 'final.occs'), self.dirname)
         copy(os.path.join(source, 'tree'), self.dirname)
+
+    def export_monophone_model(self, destination):
+        """
+        """
+        os.makedirs(destination, exist_ok=True)
+        copyfile(os.path.join(self.dirname, 'final.mdl'), os.path.join(destination, 'final.mdl'))
+        copyfile(os.path.join(self.dirname, 'final.occs'), os.path.join(destination, 'final.occs'))
+        copyfile(os.path.join(self.dirname, 'tree'), os.path.join(destination, 'tree'))
 
     def export_triphone_model(self, destination):
         """
