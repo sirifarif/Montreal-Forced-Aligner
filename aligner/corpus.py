@@ -253,9 +253,9 @@ class Corpus(object):
         self.wav_durations = {}
         self.utterance_lengths = {}
         self.utterance_oovs = {}
-        feat_path = os.path.join(self.output_directory, 'feats.scp')
-        if os.path.exists(feat_path):
-            self.feat_mapping = load_scp(feat_path)
+        self.feat_path = os.path.join(self.output_directory, 'feats.scp')
+        if os.path.exists(self.feat_path):
+            self.feat_mapping = load_scp(self.feat_path)
 
         if speaker_characters == 0:
             self.speaker_directories = True
@@ -743,6 +743,8 @@ class Corpus(object):
         self._write_utt_speak()
         self._write_text()
         self._write_wavscp()
+        self._write_featscp()
+        self._write_cmvn()
 
     def _write_utt_speak(self):
         utt2spk = os.path.join(self.output_directory, 'utt2spk')
@@ -755,6 +757,14 @@ class Corpus(object):
     def _write_text(self):
         text = os.path.join(self.output_directory, 'text')
         output_mapping(self.text_mapping, text)
+
+    def _write_cmvn(self):
+        cmvn = os.path.join(self.output_directory, 'cmvn.scp')
+        output_mapping(self.cmvn_mapping, cmvn)
+
+    def _write_featscp(self):
+        featscp = os.path.join(self.output_directory, 'feats.scp')
+        output_mapping(self.feat_mapping, featscp)
 
     def _write_wavscp(self):
         wavscp = os.path.join(self.output_directory, 'wav.scp')
@@ -787,6 +797,10 @@ class Corpus(object):
     def _split_wavs(self, directory):
         pattern = 'wav.{}.scp'
         save_groups(self.grouped_wav, directory, pattern)
+
+    def _split_feat(self, directory):
+        pattern = 'feats.{}.scp'
+        save_groups(self.grouped_feat, directory, pattern)
 
     def _split_texts(self, directory, dictionary=None):
         pattern = 'text.{}'
@@ -846,6 +860,8 @@ class Corpus(object):
             os.makedirs(os.path.join(split_dir, 'log'), exist_ok=True)
             root_logger.info('Setting up training data...')
             print('Setting up corpus_data directory...')
+            self._split_cmvns(split_dir)
+            self._split_feat(split_dir)
             self._split_wavs(split_dir)
             self._split_utt2spk(split_dir)
             self._split_spk2utt(split_dir)
